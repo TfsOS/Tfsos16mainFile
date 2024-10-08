@@ -1,0 +1,3385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TFS OS 12</title>
+</head>
+<body>
+<div id="background"></div>
+<div id="os-container" style="display: none;">
+  <!-- Entire OS interface code goes here -->
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFS OS 12</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Ta;
+            margin: 0;
+            padding: 0;
+        }
+
+        .window {
+  width: 400px;
+  min-height: 400px;
+  background-color: #EBEBEB; /* Light gray window background */
+  border: 2px solid #000000; /* Black border */
+  border-radius: 5px;
+  margin: 50px auto;
+  position: relative;
+  z-index: 1; /* Ensure it appears above other content */
+  display: none;
+}
+   #background {
+        background-image: url("https://i.postimg.cc/d1HbNKqg/c130.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        opacity: 0.7;
+        z-index: -9999;
+    }
+
+
+        .title-bar {
+            background-color: #0173CC; /* Dark gray title bar */
+            color: #ffffff; /* White text color */
+            padding: 5px;
+            font-weight: bold;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            cursor: grab; /* Added for window dragging */
+            text-align: center;
+        }
+  .minimize-button, .maximize-button {
+    position: absolute;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.minimize-button {
+    right: 35px;
+    background-color: #ffa500; /* Orange minimize button */
+}
+
+.minimize-button:hover {
+    background-color: #cc8400; /* Darker orange on hover */
+}
+
+.maximize-button {
+    right: 60px;
+    background-color: #32cd32; /* Green maximize button */
+}
+
+.maximize-button:hover {
+    background-color: #28a428; /* Darker green on hover */
+}
+
+
+        .content {
+            padding: 20px;
+        }
+
+        button {
+            background-color: #005FB9; /* Dark gray button */
+            color: #ffffff; /* White text color */
+            padding: 8px 16px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #4F4F4F; /* Darker gray on hover */
+        }
+
+        /* Added styles for the close (X) button */
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: #ff0000; /* Red close button */
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            background-color: #cc0000; /* Darker red on hover */
+        }
+
+        /* Desktop program button styles */
+        .program-button {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            background-color: #e0e0e0; /* Light gray button background */
+            margin: 10px;
+            border: 2px solid #000; /* Black border */
+            border-radius: 5px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+        }
+
+        /* Additional CSS for text formatting UI */
+        .text-formatting {
+            margin-bottom: 10px;
+        }
+        .text-formatting button {
+            margin-right: 10px;
+        }
+        .text-formatting select {
+            margin-right: 10px;
+        }
+        #wordContent {
+            min-height: 200px;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+.minimize-button, .maximize-button {
+    position: absolute;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.minimize-button {
+    right: 35px;
+    background-color: #ffa500; /* Orange minimize button */
+}
+
+.minimize-button:hover {
+    background-color: #cc8400; /* Darker orange on hover */
+}
+
+.maximize-button {
+    right: 60px;
+    background-color: #32cd32; /* Green maximize button */
+}
+
+.maximize-button:hover {
+    background-color: #28a428; /* Darker green on hover */
+}
+
+#taskbar {
+    background-color: #D6E5FA;
+    height: 50px; /* Adjust height as needed */
+    width: 100%; /* Full width */
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: start; /* Align items horizontally */
+    padding: 0 20px; /* Add padding for spacing */
+    overflow-x: auto; /* Scrollable if there are too many buttons */
+}
+
+.taskbar-button {
+    background-color: #005FB9; /* Dark gray button */
+    color: #ffffff; /* White text color */
+    padding: 8px 16px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.taskbar-button:hover {
+    background-color: #4F4F4F; /* Darker gray on hover */
+}
+
+#current-time {
+  color: black;
+  order: +100; /* Move the time to the left */
+}
+
+  .content {
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #000;
+    padding: 5px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td[contenteditable="true"] {
+    background-color: #fff;
+}
+  
+  #dictionaryResult {
+            margin-top: 20px;
+        }
+          .chat-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            height: 200px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+        }
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .chat-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            cursor: pointer;
+            background-color: #005FB9;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+  .dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  .dark-mode .window {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  .dark-mode .title-bar {
+    background-color: #222222;
+  }
+  .note {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #ffffe0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+      .minesweeper-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 25px);
+      grid-template-rows: repeat(8, 25px);
+    }
+
+    .minesweeper-cell {
+      width: 25px;
+      height: 25px;
+      border: 1px solid #ccc;
+      text-align: center;
+      line-height: 25px;
+      cursor: pointer;
+    }
+
+    .tic-tac-toe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+    }
+
+    .tic-tac-toe-cell {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ccc;
+      text-align: center;
+      line-height: 100px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+          
+        #pixelCanvas {
+            border: 1px solid #000;
+            cursor: crosshair;
+        }
+        .tool-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        #start-menu {
+            position: absolute;
+            bottom: 40px;
+            left: 10px;
+            background-color: white;
+            border: 1px solid #aaa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .start-menu-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .start-menu-item:hover {
+            background-color: #ddd;
+        }
+#searchInput {
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#searchResults {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.search-result-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background-color: #f0f0f0;
+}
+/* Searchhoo Window Styles */
+#searchhooInput {
+    width: 80%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.search-result {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.search-result h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.search-result p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.search-result a {
+    color: #005FB9;
+    text-decoration: none;
+}
+
+.search-result a:hover {
+    text-decoration: underline;
+}
+/* Customization Window Styles */
+#customizationSettingsWindow .content {
+  padding: 15px;
+}
+
+
+/* Notification Styles */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.notification {
+  background-color: #005fb9;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+  transition: opacity 0.5s;
+}
+
+.notification.hide {
+  opacity: 0;
+}
+
+#notificationCenterWindow .content,
+#notificationSettingsWindow .content {
+  padding: 10px;
+}
+
+#notificationList {
+  list-style: none;
+  padding: 0;
+}
+
+#notificationList li {
+  background: #e0e0e0;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 4px;
+}
+/* Widget Styles */
+#widgetsContainer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.widget {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Virtual Assistant Styles */
+#virtualAssistantWindow .content {
+  padding: 15px;
+}
+
+#assistantInput {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* General Window Styles */
+.window {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title-bar {
+    background-color: #007acc;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: move;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.content {
+    padding: 15px;
+}
+
+#fileExplorer {
+    border: 1px solid #ddd;
+    padding: 10px;
+    min-height: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.file {
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+}
+
+.file img {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.file-preview-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.preview-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+}
+
+.preview-content img {
+    max-width: 100%;
+}
+
+.preview-content .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="desktop">
+        <!-- Program buttons -->
+        <div class="program-button" onclick="openWindow('recycleBinWindow')"><img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/recycle-bin-icon.png" height="40px" width="30px">bin</img></div>
+        <div class="program-button" onclick="openWindow('tfsBrowserWindow')"><img src="https://www.freepnglogos.com/uploads/logo-internet-png/logo-internet-file-high-contrast-applications-internet-svg-wikimedia-9.png" height="40px" width="30px">Browser</img></div>
+        <div class="program-button" onclick="openWindow('deviceInfoWindow')"><img src="https://i.postimg.cc/SxkX8GHS/Screenshot-20240519-173434-Paint-MS-Version.jpg" height="40px" width="30px">info</img></div>
+        <div class="program-button" onclick="openWindow('tfsOSsystempanelWindow')">systempanel</div>
+        <div class="program-button" onclick="openWindow('tfsfileopenerWindow')">tmrfiles</div>
+        <div class="program-button" onclick="openWindow('sheetsWindow')"><img src="https://i.postimg.cc/KYGsWWbV/Screenshot-20240524-150034-Paint-MS-Version.jpg" height="40px" width="30px">sheets</img></div>
+        <div class="program-button" onclick="openWindow('pixelPaintingWindow')">sketchpad</div>
+        <div class="program-button" onclick="openWindow('exampleProgram3Window')">workdesk</div>
+  <div class="program-button" onclick="openWindow('gamesfolderWindow')">games</div>
+  <!-- Add this button within the TFS Browser's content section -->
+<button onclick="openWindow('searchhooWindow')">Searchho</button>
+<button onclick="openWindow('advancedFileExplorerWindow')">filesEx</button>
+<button onclick="openWindow('notificationSettingsWindow')">notification</button>
+<button onclick="openWindow('virtualAssistantWindow')">vAi</button>
+<button onclick="openWindow('tfsDocFileExplorerWindow')">test</button>
+    
+
+<!-- Word window -->
+    <div class="window" id="wordWindow">
+       <div class="title-bar">TFS WORDING
+    <button class="minimize-button" onclick="minimizeWindow('wordWindow')">mini</button>
+    <button class="maximize-button" onclick="maximizeWindow('wordWindow')">max</button>
+    <button class="close-button" onclick="closeWindow('wordWindow')">X</button>
+</div>
+
+        <div class="content">
+            <div class="text-formatting">
+    <!-- Existing buttons -->
+    <button onclick="toggleBold()">Bold</button>
+    <button onclick="toggleItalic()">Italic</button>
+    <button onclick="toggleUnderline()">Underline</button>
+    <!-- New buttons -->
+    <button onclick="toggleOverline()">Overline</button>
+    <button onclick="toggleDottedUnderline()">Dotted Underline</button>
+    <button onclick="toggleDoubleUnderline()">Double Underline</button>
+    <button onclick="toggleDashUnderline()">Dash Underline</button>
+    <input type="color" id="underlineColorInput" onchange="changeUnderlineColor()">
+    <button onclick="openThesaurus()">Thesaurus</button>
+    <button onclick="findReplace()">Find & Replace</button>
+    <button onclick="insertPageBreak()">Page Break</button>
+    <button onclick="formatColumns()">Columns</button>
+    <!-- Existing select and input elements -->
+    <select id="fontSelect" onchange="changeFont()">
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+    </select>
+    <select id="fontSizeSelect" onchange="changeFontSize()">
+        <option value="12px">12px</option>
+        <option value="14px">14px</option>
+        <option value="16px">16px</option>
+        <option value="18px">18px</option>
+        <option value="20px">20px</option>
+    </select>
+    <input type="color" id="fontColorInput" onchange="changeFontColor()">
+    <input type="color" id="highlightColorInput" onchange="changeHighlightColor()">
+    <button onclick="alignLeft()">Left</button>
+    <button onclick="alignCenter()">Center</button>
+    <button onclick="alignRight()">Right</button>
+    <button onclick="applyHeading()">Heading</button>
+    <button onclick="applyParagraph()">Paragraph</button>
+    <button onclick="saveTfsDoc()">Save</button>
+    <button onclick="loadDocument()">Load</button>
+    <button onclick="insertBulletList()">Bullet List</button>
+    <button onclick="insertNumberedList()">Numbered List</button>
+    <button onclick="increaseIndent()">Increase Indent</button>
+    <button onclick="decreaseIndent()">Decrease Indent</button>
+    <button onclick="changeParagraphSpacing()">Paragraph Spacing</button>
+    <button onclick="addHeader()">Header</button>
+    <button onclick="addFooter()">Footer</button>
+</div>
+<div>
+    <input type="text" id="thesaurusInput" placeholder="Enter a word">
+    <button onclick="lookupThesaurus()">Lookup Thesaurus</button>
+    <div id="thesaurusResults"></div>
+</div>
+<div contenteditable="true" id="wordContent">
+    Start typing here...
+</div>
+                </div>
+            </div>                                    
+        </div>
+    </div>
+    <!-- Notepad window -->
+    <div class="window" id="notepadWindow">
+        <div class="title-bar">Notepad
+            <button class="close-button" onclick="closeWindow('notepadWindow')">X</button>
+        </div>
+        <div class="content">
+            <!-- Notepad content -->
+            <textarea style="width: 100%; height: 200px;"></textarea>
+        </div>
+    </div>
+
+    <!-- Paint window -->
+    <div class="window" id="paintWindow">
+        <div class="title-bar">Pictures
+            <button class="close-button" onclick="closeWindow('paintWindow')">X</button>
+        </div>
+        <div class="content">
+            <!-- Paint content -->
+          <img src="https://i.postimg.cc/h4r5vKgp/view-spectacular-nature-landscape-23-2150763636.jpg" width="300px">img1.png</img>
+       <p><img src="https://i.postimg.cc/4dwDqSv1/mother-board-g56d4e291d-640-jpg.webp" width="300px">img2.png</p></img>
+        </div>
+    </div>
+  
+  <!-- Messenger window -->
+  <div class="window" id="messengerWindow">
+    <div class="title-bar">messenger
+      <button class="close-button" onclick="closeWindow('messengerWindow')">X</button>
+    </div>
+    <div class="content">
+      <!-- messenger content -->
+      <h2>MESSAGES</h2>
+      <ul>
+        <p><li>name: tfs</li></p>
+        <p><li>subject: welcome</li></p>
+        <p><li>description: hello there</li></p>
+        <p><li>date: tuesday,16 april 2024</li></p>
+      </ul>
+    </div>
+  </div>
+
+        <!-- tfs os system panel window -->
+       <div class="window" id="tfsOSsystempanelWindow">
+         <div class="title-bar">system panel
+           <button class="close-button" onclick="closeWindow('tfsOSsystempanelWindow')">X</button>
+         </div>
+         <div class="content">
+           <!-- system panel content -->
+           tfs OS SYSTEM PANEL
+           <p><button onclick="openWindow('deviceInfoWindow')">device info</button></p> 
+           <p><button onclick="openWindow('cpuDetailsWindow')">details</button></p>  
+         </div>
+       </div>
+
+<!-- tfs file opener window -->
+<div class="window" id="tfsfileopenerWindow">
+  <div class="title-bar">tfs fileOpener
+    <button class="close-button" onclick="closeWindow('tfsfileopenerWindow')">X</button>
+    </div>
+    <div class="content">
+      <!-- file opener content -->
+      <p></p>  <button onclick="openWindow('welcometotfsosWindow')">welcome.txt</button>
+      <button onclick="openWindow('readmetxtWindow')">readme.txt</button>
+      <button onclick="openWindow('tfswordNotesWindow')">notes</button>
+      
+      <button onclick="openWindow('tfsStoreWindow')">store</button>
+    </div>
+</div>
+
+    <!-- File Manager window -->
+    <div class="window" id="fileManagerWindow">
+        <div class="title-bar">File Manager
+            <button class="close-button" onclick="closeWindow('fileManagerWindow')">X</button>
+        </div>
+        <div class="content">
+          <h2>folders</h2>
+          <h3>user1</h3>
+          <p><button onclick="openWindow('documentsWindow')">documents</button></p>
+          <p><button onclick="openWindow('pianoWindow')">pictures</button></p>
+          <p><button onclick="openWindow('musicWindow')">music</button></p>
+               </div>
+            </div>
+
+<!-- Documents Window -->
+<div class="window" id="documentsWindow">
+  <div class="title-bar">
+    <button class="close-button" onclick="closeWindow('documentsWindow')">X</button>
+  </div>
+  <div class="content">
+    <h3><p><button onclick="openWindow('fileManagerWindow')">root:</button><button>doc</button></p></h3>
+    <p><h2>Documents: User-1</h2></p> 
+    <ul><li><p><button onclick="openWindow('readmetxtWindow')">readme.txt</button></p></li></ul>
+    <ul><li><p><button onclick="openWindow('thisismymsgWindow')">Message for user</button></p></li></ul>
+  </div>
+</div>
+  
+<!-- picturez window -->
+<div class="window" id="pianoWindow">
+  <div class="title-bar">
+    <button class="close-button" onclick="closeWindow('pianoWindow')">X</button>
+  </div>
+  <div class="content">
+    <h3><p><button onclick="openWindow('fileManagerWindow')">root:</button><button>pictures</button></p></h3>
+    <p><h2>pictures: User-1</h2></p>
+    <p><button onclick="openWindow('paintWindow')">img1.png</button></p>
+    <p><button onclick="openWindow('paintWindow')">img2.png</button></p>  
+  </div>
+</div>
+        
+
+    <!-- Recycle Bin window -->
+    <div class="window" id="recycleBinWindow">
+        <div class="title-bar">Bin
+            <button class="close-button" onclick="closeWindow('recycleBinWindow')">X</button>
+        </div>
+        <div class="content">
+            <!-- Recycle Bin content -->
+            <p>Recycle Bin</p>
+          no files yet
+        </div>
+    </div>
+
+  
+  <!-- antivirus and firewall window -->
+  <div class="window" id="antivirusWindow">
+    <div class="title-bar">TFS ANTIVIRUS AND FIREWALL
+      <button class="close-button" onclick="closeWindow('antivirusWindow')">X</button>
+    </div>
+    <div class="content">
+      <!-- antivus content -->
+      tfs firewall installed.
+      <p>tfs antivirus installed</p>
+      <p>tfs firewall : on</p><p>tfs antivirus : on</p>
+        </div>
+    </div>
+    
+
+    <!-- Help window -->
+    <div class="window" id="helpWindow">
+        <div class="title-bar">Help
+            <button class="close-button" onclick="closeWindow('helpWindow')">X</button>
+        </div>
+        <div class="content">
+            <!-- Help content -->
+            <p>HELP</p>
+          <p>if you are havig issues with your device please try the following</p>
+          <li>
+            <p>try restarting your device</p>
+            <p>try software update</p>
+            <p>clear your browser cache</p>
+            <p>try contacting tfs support on tfs helpline no. 9475875115</p>
+          </li>
+          <p>tfs-wording help</p>  
+          to format tge text click on any of tge options in the tootlbar.
+          to turn off the formatting options again click on the formatting options
+          <p>tfs network/net help</p>
+          <li><p>there are many ways and services to connect to  the tfs net.one of the services are dial up and wire line connection.</p></li>
+        </div>
+    </div>
+
+    <!-- TFS DOS window -->
+    <div class="window" id="tfsDOSWindow">
+        <div class="title-bar">TFS DOS
+            <button class="close-button" onclick="closeWindow('tfsDOSWindow')">X</button>
+        </div>
+        <div class="content">
+            <!-- TFS DOS content -->
+            <p>Welcome to TFS DOS. Enter commands below:</p>
+            <input type="text" id="dosInput" onkeydown="handleDOSCommand(event)">
+            <pre id="dosOutput"></pre>
+        </div>
+    </div>
+    
+         <!-- TFS media player window -->
+          <div class="window" id="mediaplayerWindow">
+            <div class="title-bar">tfs  media player
+                 <button class="close-button" onclick="closeWindow('mediaplayerWindow')">X</button>
+            </div>
+            <div class="content">
+              <iframe src="https://s21.aconvert.com/convert/p3r68-cdx67/4w5s3-h8fpy.mp3"></iframe>
+            </div>
+          </div>
+
+           <!-- TFS vids window -->
+           <div class="window" id="vidsWindow">
+            <div class="title-bar">TFS vids
+                 <button class="close-button" onclick="closeWindow('vidsWindow')">X</button>
+            </div>
+            <div class="content">
+                <iframe width="300" height="315" src="https://www.youtube.com/embed/OU-0MkB3Vsk?si=-29_KhUhwbZfghwJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <p>tfs os 12</p>
+            </div>
+          </div>
+
+    <!-- Mailbox window -->
+    <div class="window" id="mailboxWindow">
+        <div class="title-bar">Mailbox
+            <button class="close-button" onclick="closeWindow('mailboxWindow')">X</button>
+        </div>
+        <div class="content">
+     <iframe src="tfsosoriginalmail.html" height="100%" width="300px"></iframe>
+        </div>
+    </div>
+
+    <!-- TFS Browser window -->
+<div class="window" id="tfsBrowserWindow">
+    <div class="title-bar">TFS Browser
+        <button class="close-button" onclick="closeWindow('tfsBrowserWindow')">X</button>
+    </div>
+    <div class="content">
+        <!-- TFS Browser content -->
+        <div class="browser-interface">
+            <div class="address-bar">
+                <span>URL: </span>
+                <input type="text" id="urlInput" style="width: 60%;" placeholder="Enter URL">
+                <button onclick="goToURL()" style="width: 20%;">Go</button>
+            </div>
+          <button onclick="openWebsite('https://www.example.com')">Example</button>
+                <button onclick="openWebsite('https://www.ask.com')">Ask!</button>
+                <button onclick="openWebsite('https://www.wikipedia.org')">Wikipedia</button>
+            </div>
+            <hr class="browser-line"> <!-- Black line simulating a browser interface -->
+            <div class="website-content" id="websiteContent">
+                <!-- Content of the inbuilt website will be displayed here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+  
+  <!-- Device Info window -->
+<div class="window" id="deviceInfoWindow">
+    <div class="title-bar">Device Info
+        <button class="close-button" onclick="closeWindow('deviceInfoWindow')">X</button>
+    </div>
+    <div class="content">
+        <!-- Device Info content -->
+        <p>Device Name: tfs-desktop935829A
+        <p>Operating System: TFS OS
+        <p>Browser: TFS BROWSER VERSION.108
+          <p>OS VER</p>
+          <p>tfs os ver.8</p>
+        <!-- Add more device information as needed -->
+    </div>
+</div>
+        <!-- tfs about window -->
+          <div class="window" id="tfsWindow">
+            <div class="title-bar">tfs Appstore
+              <button class="close-button" onclick="closeWindow('tfsWindow')">X</button>
+            </div>
+    <div class="content">
+        <!-- List of available programs -->
+        <h2>Available Programs:</h2>
+        <ul>
+            <li>tfs Code Writer<button id="codeWriterInstallButton" onclick="installProgram('codeWriter', 'codeWriterWindow')">Download</button></li>
+            <li>wind<button id="calculatorInstallButton" onclick="installProgram('calculator', 'calculatorWindow')">Download</button></li>
+            <li>tfs<button id="weatherAppInstallButton" onclick="installProgram('weatherApp', 'weatherAppWindow')">Download</button></li>
+            <li>tfs<button id="photoEditorInstallButton" onclick="installProgram('photoEditor', 'photoEditorWindow')">Download</button></li>
+            <li>tfs<button id="musicPlayerInstallButton" onclick="installProgram('musicPlayer', 'musicPlayerWindow')">Download</button></li>
+            <li>tfs<button id="toDoListInstallButton" onclick="installProgram('toDoList', 'toDoListWindow')">Download</button></li>
+            <li>tfs<button id="puzzleGameInstallButton" onclick="installProgram('puzzleGame', 'puzzleGameWindow')">Download</button></li>
+            <li>tfs<button id="racingGameInstallButton" onclick="installProgram('racingGame', 'racingGameWindow')">Download</button></li>
+            <li>tfs44<button id="cookingAppInstallButton" onclick="installProgram('cookingApp', 'cookingAppWindow')">Download</button></li>
+            <li>tfs-axr-mrh help & manual<button id="fitnessTrackerInstallButton" onclick="installProgram('fitnessTracker', 'fitnessTrackerWindow')">Download</button></li>
+            <!-- Add more programs as needed -->
+        </ul>
+    </div>
+</div>
+          <!-- Example program window (replace with actual program windows) -->
+<div class="window" id="wordPadWindow">
+    <div class="title-bar">tfs codewriter
+        <button class="close-button" onclick="closeWindow('wordPadWindow')">X</button>
+    </div>
+    <div class="content">
+      <textarea style="width=20px; height=70px;">start typing here</textarea>
+      <h3><p>write the code in the textarea then copy-paste it and then run the code in a different application.</p></h3>
+    </div>
+</div>
+          
+          <div class="window" id="fitnessTrackerWindow">
+    <div class="title-bar">help& manual
+        <button class="close-button" onclick="closeWindow('fitnessTrackerWindow')">X</button>
+    </div>
+    <div class="content">
+        <!-- Fitness tracker content goes here -->
+      <h1>Operating System Manual</h1>
+     <ul>
+    <li><strong>Introduction:</strong> Welcome to the operating system (OS) manual. This manual provides an overview of the features and functionality of the operating system, helping you navigate and utilize its capabilities effectively.</li>
+    <li><strong>Getting Started:</strong>
+        <ul>
+            <li>To begin using the operating system, power on your computer and wait for the system to boot up.</li>
+            <li>Once the OS is loaded, youll be presented with the desktop environment or login screen.</li>
+        </ul>
+    </li>
+    <li><strong>Desktop Environment:</strong>
+        <ul>
+            <li>The desktop is your main workspace, where you can interact with files, folders, and applications.</li>
+            <li>Icons represent various programs and files. Double-click on an icon to open it.</li>
+            <li>The taskbar typically resides at the bottom of the screen and provides quick access to frequently used programs and system settings.</li>
+        </ul>
+    </li>
+    <li><strong>File Management:</strong>
+        <ul>
+            <li>Use the file manager to navigate through directories and manage files.</li>
+            <li>Create new folders, rename files, and delete items as needed.</li>
+            <li>Use keyboard shortcuts or right-click menus for quick file operations.</li>
+        </ul>
+    </li>
+    <li><strong>Applications:</strong>
+        <ul>
+            <li>Launch applications by double-clicking their icons on the desktop or accessing them from the start menu.</li>
+            <li>Install additional software from the app store or by downloading and installing executable files.</li>
+            <li>Use keyboard shortcuts for faster access to commonly used applications.</li>
+        </ul>
+    </li>
+    <li><strong>System Settings:</strong>
+        <ul>
+            <li>Access system settings to customize various aspects of the operating system.</li>
+            <li>Configure display settings, sound preferences, network connections, and more.</li>
+            <li>Update the operating system and installed software to ensure security and performance improvements.</li>
+        </ul>
+    </li>
+    <li><strong>Troubleshooting:</strong>
+        <ul>
+            <li>If you encounter issues with the operating system, consult the troubleshooting section of the manual or seek assistance from technical support.</li>
+            <li>Restart the computer or try reinstalling problematic software to resolve issues.</li>
+        </ul>
+    </li>
+    <li><strong>Security:</strong>
+        <ul>
+            <li>Keep your operating system and antivirus software up to date to protect against security threats.</li>
+            <li>Be cautious when downloading files from the internet and only install software from trusted sources.</li>
+            <li>Use strong passwords and consider enabling additional security features such as two-factor authentication.</li>
+        </ul>
+    </li>
+    <li><strong>Additional Resources:</strong>
+        <ul>
+            <li>Refer to the online documentation or help files for more detailed information about specific features or tasks.</li>
+            <li>Join user forums or communities to connect with other users and share tips and tricks for using the operating system.</li>
+        </ul>
+    </li>
+</ul>
+    </div>
+</div>
+          
+          <!-- Sheets window -->
+        <div class="window" id="sheetsWindow">
+            <div class="title-bar">tfs sheets
+                <button class="close-button" onclick="closeWindow('sheetsWindow')">X</button>
+            </div>
+            <div class="content">
+                <table id="sheetsTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>D</th>
+                            <th>E</th>
+                            <th>F</th>
+                            <th>G</th>
+                            <th>H</th>
+                            <th>I</th>
+                            <th>J</th>
+                    </thead>
+                    <tbody>
+                        <!-- Example rows -->
+                        <tr>
+                            <td>1</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>3</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>4</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>5</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>6</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>7</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>8</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>9</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                            <td>10</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                      <tr>
+                    </tbody>
+                </table>
+                <button onclick="sheets.addRow()">Add Row</button>
+                <button onclick="sheets.addColumn()">Add Column</button>
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- Notification Container -->
+<div id="notificationContainer" class="notification-container"></div>
+
+<!-- Notification Center Window -->
+<div class="window" id="notificationCenterWindow">
+  <div class="title-bar">Notification Center
+    <button class="close-button" onclick="closeWindow('notificationCenterWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>Notification Center</h2>
+    <ul id="notificationList"></ul>
+  </div>
+</div>
+
+<!-- Notification Settings Window -->
+<div class="window" id="notificationSettingsWindow">
+  <div class="title-bar">Notification Settings
+    <button class="close-button" onclick="closeWindow('notificationSettingsWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>Notification Settings</h2>
+    <label>
+      <input type="checkbox" id="enableSound"> Enable Sound
+    </label><br>
+    <label>
+      <input type="checkbox" id="enableVisual"> Enable Visual Alerts
+    </label><br>
+    <label>
+      Duration: <input type="number" id="notificationDuration" value="5" min="1"> seconds
+    </label><br>
+    <button onclick="saveNotificationSettings()">Save Settings</button>
+  </div>
+</div>
+
+
+          
+                  <!-- Additional windows (Settings, Task Manager, AI Program) -->
+        <div class="window" id="settingsWindow">
+            <div class="title-bar">Settings
+                <button class="close-button" onclick="closeWindow('settingsWindow')">X</button>
+            </div>
+            <div class="content">
+                <!-- Settings content -->
+                <p>Settings</p>
+            <button onclick="openWindow('customizationSettingsWindow')">customize</button>
+            </div>
+        </div>
+        <div class="window" id="processesWindow">
+            <div class="title-bar">Task Manager
+                <button class="close-button" onclick="closeWindow('processesWindow')">X</button>
+            </div>
+            <div class="content">
+                <!-- Task Manager content -->
+                <p>Task Manager</p>
+                <!-- Add task manager details here -->
+            </div>
+        </div>
+        <div class="window" id="aiProgramWindow">
+            <div class="title-bar">AI Program
+                <button class="close-button" onclick="closeWindow('aiProgramWindow')">X</button>
+            </div>
+            <div class="content">
+                <div class="chat-box" id="chatBox"></div>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+                <button class="chat-button" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+         
+<!-- Example Program 2 Window -->
+<div class="window" id="cpuDetailsWindow">
+    <div class="title-bar">Cpu details
+        <button class="close-button" onclick="closeWindow('cpuDetailsWindow')">X</button>
+    </div>
+    <div class="content">
+        <p>Cpu details</p>
+      <p><img src="https://i.postimg.cc/fyPyt8Wz/Screenshot-20240530-153240-Paint-MS-Version.jpg" width="300px" alt="tfs-cpu"></img></p>
+        <p>Cpu: tfsRobotics-CPU-M19370A TFS 15TH GEN MRNSA PROCESSOR.</p>
+      <p><hr>cores: 14</p>
+    </div>
+</div>
+
+<!-- Example Program 3 Window -->
+<div class="window" id="exampleProgram3Window">
+    <div class="title-bar">TFS WORKDESK
+        <button class="close-button" onclick="closeWindow('exampleProgram3Window')">X</button>
+    </div>
+    <div class="content">
+        <p>Welcome to TFS workdesk</p>
+        <p><button onclick="openWindow('wordWindow')">wording</button></p>
+    </div>
+</div>
+
+<!-- Customization Settings Window -->
+<div class="window" id="customizationSettingsWindow">
+  <div class="title-bar">Customization Settings
+    <button class="close-button" onclick="closeWindow('customizationSettingsWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>Customize Your OS</h2>
+    
+    <!-- Theme Selection -->
+    <label>Choose Theme:</label>
+    <select id="themeSelect" onchange="applyTheme()">
+      <option value="light">Light Theme</option>
+      <option value="dark">Dark Theme</option>
+      <option value="custom">Custom Theme</option>
+    </select>
+    
+    <!-- Background Image Upload -->
+    <label>Background Image:</label>
+    <input type="file" id="backgroundUpload" onchange="changeBackgroundImage(event)"><br>
+
+    <!-- Window Appearance -->
+    <label>Window Color:</label>
+    <input type="color" id="windowColor" value="#EBEBEB" onchange="changeWindowColor()"><br>
+    <label>Window Border Style:</label>
+    <select id="windowBorder" onchange="changeWindowBorder()">
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select><br>
+    <label>Window Transparency:</label>
+    <input type="range" id="windowTransparency" min="0.5" max="1" step="0.1" value="1" onchange="changeWindowTransparency()"><br>
+
+    <!-- Font and Text Size -->
+    <label>Font Style:</label>
+    <select id="fontStyle" onchange="changeFontStyle()">
+      <option value="Arial">Arial</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Verdana">Verdana</option>
+    </select>
+    <label>Text Size:</label>
+    <input type="number" id="fontSize" value="14" min="10" max="20" onchange="changeFontSize()"><br>
+
+    <!-- Sound Settings -->
+    <label>
+      <input type="checkbox" id="soundEffects" checked> Enable Sound Effects
+    </label><br>
+
+    <button onclick="saveCustomizationSettings()">Save Settings</button>
+  </div>
+</div>
+
+          
+          <!-- tfs cooking app window -->
+           <div class="window" id="cookingAppWindow">
+        <div class="title-bar">tfs login
+            <button class="close-button" onclick="closeWindow('cookingAppWindow')">X</button>
+        </div>
+        <div class="content" id="login2Page">
+            <h2>Login</h2>
+            <form id="login1Form">
+                <input type="text" id="user1name" placeholder="Username" required>
+                <input type="password" id="passw1ord" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="loginMessage"></div>
+        </div>
+        <div class="content hidden" id="appPage">
+            <!-- Cooking app content goes here -->
+            <h2>Welcome,<span id="loggedInUser"></span>!</h2>
+            <p>This is the tfs login app. to be added )</p>
+          <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+  </div>
+
+          <!-- taskmanager window -->
+          <div class="window" id="TaskmanagerWindow">
+            <div class="title-bar">tfs
+              <button class="close-button" onclick="closeWindow('TaskmanagerWindow')">X</button>
+            </div>
+              <div class="content">
+                <!-- task manager content -->
+                <h1><p>welcome to tfs-axr-mrh app</p></h1>
+                <h3>tfs-axr-mrh is a scientific organisation.</h3>
+                <h3>to try out the tfs searchoo type url www.tfs-searchoo.com in the tfs browser url addressbar</h3>
+                <p><h4>thank you for using tfs-axr-mrh  OS</h4></p>
+                <p><h4><a href="https://www.sites.google.com/view/tfs-website">[website]</a></h4></p>
+            </div>
+          </div>
+          
+          <!-- start window -->
+          <div class="window" id="startWindow">
+            <div class="title-bar">start window
+              <button class="close-button" onclick="closeWindow('startWindow')">X</button>
+            </div>
+            <div class="content">
+              START
+        <p><div class="program-button" onclick="openWindow('tfsWindow')">tfs appstore</div></p>
+        <div class="program-button" onclick="openWindow('TaskmanagerWindow')"><img src="https://i.postimg.cc/pTZQCFG8/tfs-abstract-technology-logo-design-on-white-background-tfs-creative-initials-letter-logo-concept-ve.jpg" height="40px" width="30px">tfs</img></div>
+        <div class="program-button" onclick="openWindow('messengerWindow')"><img src="https://i.postimg.cc/9MDjg1xH/Screenshot-20240519-175027-Paint-MS-Version.jpg" height="40px" width="30px">msg</img></div>
+        <div class="program-button" onclick="openWindow('wordWindow')"><img src="https://i.postimg.cc/s2Dz737X/Screenshot-20240519-175331-Paint-MS-Version.jpg" height="40px" width="30px">Wording</img></div>
+        <div class="program-button" onclick="openWindow('notepadWindow')"><img src="https://i.postimg.cc/pdGHB3JB/Screenshot-20240519-174411-Paint-MS-Version.jpg" height="40px" width="30px">Notepad</img></div>
+        <div class="program-button" onclick="openWindow('paintWindow')"><img src="https://i.postimg.cc/Jh0qcg2D/pictures.jpg" height="40px" width="30px">pictures</img></div>
+        <div class="program-button" onclick="openWindow('fileManagerWindow')"><img src="https://i.postimg.cc/9Q2CXdfy/Screenshot-20240519-174621-Paint-MS-Version.jpg" height="40px" width="30px">Files</img></div>
+        <div class="program-button" onclick="openWindow('helpWindow')"><img src="https://i.postimg.cc/FHks1rbQ/Screenshot-20240519-175959-Paint-MS-Version.jpg" height="40px" width="30px">Help</img></div>
+        <div class="program-button" onclick="openWindow('tfsDOSWindow')"><img src="https://i.postimg.cc/xdrjzwgN/Screenshot-20240519-175754-Paint-MS-Version.jpg" height="40px" width="30px">terminal</img></div>
+        <div class="program-button" onclick="openWindow('mailboxWindow')"><img src="https://i.postimg.cc/rw9cDDd3/Screenshot-20240519-174921-Paint-MS-Version.jpg" height="40px" width="30px">Mailbox</img></div>
+        <div class="program-button" onclick="openWindow('calculatorWindow')"><img src="https://cdn2.iconfinder.com/data/icons/ios7-inspired-mac-icon-set/512/Calculator_512.png" height="40px" width="30px">Calc</img></div>
+        <div class="program-button" onclick="openWindow('antivirusWindow')">tfs antivirus</div>
+        <div class="program-button" onclick="openWindow('recycleBinWindow')"><img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/recycle-bin-icon.png" height="40px" width="30px">bin</img></div>
+        <div class="program-button" onclick="openWindow('tfsBrowserWindow')"><img src="https://www.freepnglogos.com/uploads/logo-internet-png/logo-internet-file-high-contrast-applications-internet-svg-wikimedia-9.png" height="40px" width="30px">Browser</img></div>
+        <div class="program-button" onclick="openWindow('deviceInfoWindow')"><img src="https://i.postimg.cc/SxkX8GHS/Screenshot-20240519-173434-Paint-MS-Version.jpg" height="40px" width="30px">info</img></div>
+        <div class="program-button" onclick="openWindow('tfsOSsystempanelWindow')"><img src="https://i.postimg.cc/s2Dz737X/Screenshot-20240519-175331-Paint-MS-Version.jpg" height="40px" width="30px">sys</img></div>
+        <div class="program-button" onclick="openWindow('cpuDetailsWindow')">details</div>
+       <div class="program-button" onclick="openWindow('vidsWindow')">vids</div>
+       <div class="program-button" onclick="openWindow('mediaplayerWindow')">media player</div>
+       <div class="program-button" onclick="openWindow('dictionaryWindow')">dictionary</div>
+        <div class="program-button" onclick="openWindow('settingsWindow')">Settings</div>
+        <div class="program-button" onclick="openWindow('processesWindow')">Task Manager</div>
+        <div class="program-button" onclick="openWindow('aiProgramWindow')">AI Program</div>
+        <div class="program-button" onclick="openWindow('bsnlWindow')">Notes</div>
+        <div class="program-button" onclick="openWindow('programsearchWindow')">Search</div>
+
+
+    </div>
+              
+              
+            </div>
+          </div>
+          
+          <div class="window" id="programsearchWindow">
+              <div class="title-bar">Program Search
+              <button class="close-button" onclick="closeWindow('programsearchWindow')">X</button>
+              </div>
+              <div class="content">
+                  Search for programs
+              <p>
+                  <input type="text" id="searchInput" placeholder="Search programs..." oninput="searchPrograms()">
+              </p>
+              <p>results</p>
+              <p>
+                  <div id="searchResults"></div>
+
+              </p>
+              </div>
+          </div>
+          
+          <!-- Searchhoo Window -->
+<div class="window" id="searchhooWindow">
+    <div class="title-bar">Searchhoo
+        <button class="close-button" onclick="closeWindow('searchhooWindow')">X</button>
+    </div>
+    <div class="content">
+        <input type="text" id="searchhooInput" placeholder="Type your search..." onkeydown="if(event.key === 'Enter') performSearch()">
+        <button onclick="performSearch()">Search</button>
+        <div id="searchResultsContainer"></div>
+    </div>
+</div>
+
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+
+ <!-- Calculator window -->
+<div class="window" id="calculatorWindow">
+    <div class="title-bar">Calculator
+        <button class="close-button" onclick="closeWindow('calculatorWindow')">X</button>
+    </div>
+    <div class="content">
+        <!-- Calculator display -->
+        <div id="calculatorDisplay">0</div>
+        <!-- Calculator buttons -->
+        <div class="calculator-buttons">
+            <button onclick="addToDisplay(7)">7</button>
+            <button onclick="addToDisplay(8)">8</button>
+            <button onclick="addToDisplay(9)">9</button>
+            <button onclick="add()">+</button>
+        </div>
+        <div class="calculator-buttons">
+            <button onclick="addToDisplay(4)">4</button>
+            <button onclick="addToDisplay(5)">5</button>
+            <button onclick="addToDisplay(6)">6</button>
+            <button onclick="subtract()">-</button>
+        </div>
+        <div class="calculator-buttons">
+            <button onclick="addToDisplay(1)">1</button>
+            <button onclick="addToDisplay(2)">2</button>
+            <button onclick="addToDisplay(3)">3</button>
+            <button onclick="multiply()">*</button>
+        </div>
+        <div class="calculator-buttons">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="addToDisplay(0)">0</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="divide()">/</button>
+        </div>
+    </div>
+</div>
+
+<!-- Dictionary Window -->
+<div class="window" id="dictionaryWindow">
+    <div class="title-bar">
+        Dictionary
+        <button class="close-button" onclick="closeWindow('dictionaryWindow')">X</button>
+    </div>
+    <div class="content">
+        <input type="text" id="dictionarySearch" placeholder="Enter a word">
+        <button onclick="searchDictionary()">Search</button>
+        <div id="dictionaryResult"></div>
+    </div>
+</div>
+
+<!-- notes app -->
+<div class="window" id="bsnlWindow">
+  <div class="title-bar">Notes
+    <button class="close-button" onclick="closeWindow('notesAppWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>Notes</h2>
+    <button onclick="createNote()">New Note</button>
+    <button onclick="clearNotes()">Clear All Notes</button>
+    <div id="notesContainer">Your notes will appear here...</div>
+  </div>
+</div>
+
+<!-- Minesweeper -->
+  <div class="window" id="minesweeperWindow">
+    <div class="title-bar">Minesweeper
+      <button class="close-button" onclick="closeWindow('minesweeperWindow')">X</button>
+    </div>
+    <div class="content">
+      <h2>Minesweeper</h2>
+      <div class="minesweeper-grid" id="minesweeperGrid"></div>
+    </div>
+  </div>
+
+  <!-- Tic-Tac-Toe -->
+  <div class="window" id="ticTacToeWindow">
+    <div class="title-bar">Tic-Tac-Toe
+      <button class="close-button" onclick="closeWindow('ticTacToeWindow')">X</button>
+    </div>
+    <div class="content">
+      <h2>Tic-Tac-Toe</h2>
+      <div class="tic-tac-toe-grid" id="ticTacToeGrid"></div>
+    </div>
+  </div>
+
+<!-- japanJong -->
+  <div class="window" id="japanWindow">
+    <div class="title-bar">JapanJong
+      <button class="close-button" onclick="closeWindow('japanWindow')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/JapanJong/"></iframe>
+    </div>
+  </div>
+
+  <!-- games window -->
+  <div class="window" id="gamesfolderWindow">
+    <div class="title-bar">GAMES - FOLDER
+      <button class="close-button" onclick="closeWindow('gamesfolderWindow')">X</button>
+    </div>
+    <div class="content">
+      <div class="program-button" onclick="openWindow('minesweeperWindow')">Minesweeper</div>
+  <div class="program-button" onclick="openWindow('ticTacToeWindow')">Tic-Tac-Toe</div>
+      <div class="program-button" onclick="openWimdow('japanWindow')">JapanJong</div>
+      <!-- Iframe Game Buttons -->
+  <div class="program-button" onclick="openWindow('iframeGame1Window')">Jigsaw Cities</div>
+  <div class="program-button" onclick="openWindow('iframeGame2Window')">Summer Mahjong</div>
+  <div class="program-button" onclick="openWindow('iframeGame3Window')">Jungle Solitaire</div>
+  <div class="program-button" onclick="openWindow('iframeGame4Window')">Retro Bricks</div>
+  <div class="program-button" onclick="openWindow('iframeGame5Window')">Pinball Breakout</div>
+  <div class="program-button" onclick="openWindow('flightWindow')">flight sim</div>
+  <div class="program-button" onclick="openWindow('shootingWindow')">masked forces</div>
+
+
+
+
+      
+      
+
+
+
+    </div>
+  </div>
+  
+  <!-- Iframe Game Windows -->
+  <div class="window" id="iframeGame1Window">
+    <div class="title-bar">Jigsaw Cities
+      <button class="close-button" onclick="closeWindow('iframeGame1Window')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/JigsawCities1/" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div class="window" id="iframeGame2Window">
+    <div class="title-bar">Summer Mahjong
+      <button class="close-button" onclick="closeWindow('iframeGame2Window')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/SummerMahjong/" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div class="window" id="iframeGame3Window">
+    <div class="title-bar">Jungle Solitaire
+      <button class="close-button" onclick="closeWindow('iframeGame3Window')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/JungleSolitaire/" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div class="window" id="iframeGame4Window">
+    <div class="title-bar">Retro Bricks
+      <button class="close-button" onclick="closeWindow('iframeGame4Window')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/RetroBricks/" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div class="window" id="iframeGame5Window">
+    <div class="title-bar">Pinball Breakout
+      <button class="close-button" onclick="closeWindow('iframeGame5Window')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/PinballBreakout/" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+  </div>
+
+ <!-- japanJong -->
+  <div class="window" id="japanWindow">
+    <div class="title-bar">JapanJong
+      <button class="close-button" onclick="closeWindow('japanWindow')">X</button>
+    </div>
+    <div class="content">
+      <iframe src="https://cdn.htmlgames.com/JapanJong/"></iframe>
+    </div>
+  </div>
+
+<!-- flight sim -->
+<div class="window" id="flightWindow">
+  <div class="title-bar">flight sim
+    <button class="close-button" onclick="closeWindow('flightWindow')">X</button>
+    </div>
+  <div class="content">
+    <iframe src="https://www.onlinegames.io/games/2023/unity/real-flight-simulator/index.html"></iframe>
+    <progress></progress>
+    <p><h2><b>LOADING GAME</b></h2></p>
+    <p><h2><b>THIS MAY TAKE A WHILE</b></h2></p>
+  </div>
+</div>
+
+
+<!-- chess -->
+<div class="window" id="chessWindow">
+  <div class="title-bar">chess
+    <button class="close-button" onclick="closeWindow('chessWindow')">X</button>
+    </div>
+  <div class="content">
+    <iframe src="https://playpager.com/embed/chess/index.html"></iframe>
+  </div>
+</div>
+
+<!-- shooting -->
+<div class="window" id="shootingWindow">
+  <div class="title-bar">Masked forces
+    <button class="close-button" onclick="closeWindow('shootingWindow')">X</button>
+    </div>
+  <div class="content">
+    <iframe src="https://www.onlinegames.io/games/2022/unity2/masked-special-forces/index.html"></iframe>
+  </div>
+</div>
+
+<!-- Desktop Widgets -->
+
+
+  <!-- System Monitor Widget -->
+  <div class="widget system-monitor-widget" id="systemMonitorWidget">
+    <h3>System Monitor</h3>
+    <div id="systemUsage">CPU: 10%, Memory: 30%</div>
+  </div>
+
+
+
+
+<!-- Virtual Assistant Window -->
+<div class="window" id="virtualAssistantWindow">
+  <div class="title-bar">Virtual Assistant
+    <button class="close-button" onclick="closeWindow('virtualAssistantWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>How can I help you?</h2>
+    <input type="text" id="assistantInput" placeholder="Type a command or ask a question...">
+    <button onclick="processAssistantCommand()">Submit</button>
+    <div id="assistantResponse"></div>
+  </div>
+</div>
+
+
+
+
+        <!-- Pixel Painting Window -->
+        <div class="window" id="pixelPaintingWindow">
+            <div class="title-bar">
+                Pixel Paint
+                <button class="minimize-button" onclick="minimizeWindow('pixelPaintingWindow')">mini</button>
+                <button class="maximize-button" onclick="maximizeWindow('pixelPaintingWindow')">max</button>
+                <button class="close-button" onclick="closeWindow('pixelPaintingWindow')">X</button>
+            </div>
+            <div class="content">
+                <div class="tool-bar">
+                    <input type="color" id="colorPicker">
+                    <input type="number" id="brushSize" value="10" min="1" max="1000000">
+                    <button onclick="clearCanvas()">Clear</button>
+                  <button onclick="savePainting()">Save</button>
+                    <button onclick="loadPainting()">Load</button>
+                
+                </div>
+                <canvas id="pixelCanvas" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Advanced File Explorer Window -->
+<div class="window" id="advancedFileExplorerWindow">
+  <div class="title-bar">Advanced File Explorer
+    <button class="close-button" onclick="closeWindow('advancedFileExplorerWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>File Explorer</h2>
+    <div id="fileExplorer" ondrop="handleFileDrop(event)" ondragover="event.preventDefault()">
+      <!-- Dynamically added files will appear here -->
+    </div>
+    <input type="file" id="fileInput" multiple onchange="uploadFiles(event)" style="display: none;">
+    <button onclick="document.getElementById('fileInput').click()">Upload Files</button>
+  </div>
+</div>
+
+<!-- File Preview Modal -->
+<div id="filePreviewModal" class="file-preview-modal">
+  <div class="preview-content">
+    <button class="close-button" onclick="closePreview()">X</button>
+    <div id="previewArea"></div>
+  </div>
+</div>
+
+
+
+<!-- TFS Word Document File Explorer -->
+<div class="window" id="tfsDocFileExplorerWindow">
+  <div class="title-bar">TFS Word File Explorer
+    <button class="close-button" onclick="closeWindow('tfsDocFileExplorerWindow')">X</button>
+  </div>
+  <div class="content">
+    <h2>Saved TFS Word Documents</h2>
+    <div id="tfsDocFileExplorer" ondrop="handleFileDrop(event)" ondragover="event.preventDefault()">
+      <!-- Dynamically added TFS Word document files will appear here -->
+    </div>
+    <input type="file" id="tfsDocFileInput" multiple onchange="uploadTfsDocFiles(event)" style="display: none;">
+    <button onclick="document.getElementById('tfsDocFileInput').click()">Upload TFS Word Document</button>
+    <button onclick="saveTfsDoc()">Save Current Document</button>
+    <button onclick="loadTfsDoc()">Load Selected Document</button>
+  </div>
+</div>
+
+<script>
+  // Save and load TFS Word documents
+  function saveTfsDoc() {
+    const content = document.getElementById('wordContent').innerHTML;
+    const blob = new Blob([content], { type: 'text/tgsdoc' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.tfsdoc';
+    a.click();
+    
+    URL.revokeObjectURL(url);
+    alert('TFS Word document saved successfully!');
+  }
+
+  function loadTfsDoc() {
+    const fileInput = document.getElementById('tfsDocFileInput');
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('wordContent').innerHTML = e.target.result;
+      };
+      reader.readAsText(file);
+      alert('TFS Word document loaded successfully!');
+    }
+  }
+
+  // Upload TFS Word document files
+  function uploadTfsDocFiles(event) {
+    const files = event.target.files;
+    const fileExplorer = document.getElementById('tfsDocFileExplorer');
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const listItem = document.createElement('div');
+      listItem.innerHTML = file.name;
+      fileExplorer.appendChild(listItem);
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    <div id="start-menu" class="hidden">
+        <div class="start-menu-item" onclick="openWindow('startWindow')">➡️ All programs</div>
+        <div class="start-menu-item" onclick="openWindow('tfsBrowserWindow')">🌐 Browser</div>
+        <div class="start-menu-item" onclick="openWindow('bsnlWindow')">📝 Notes</div>
+    </div>
+
+  
+  
+
+
+
+<div id="taskbar">
+    
+
+    <div id="start-button" onclick="toggleStartMenu()">Start</div>
+    <div id="current-time"></div>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+</div>
+
+  </div>
+</div>
+
+    <script>
+ 
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      loadNotes();
+      initializeMinesweeper();
+      initializeTicTacToe();
+    });
+
+        // Function to open a window by its ID
+        function openWindow(windowId) {
+            let window = document.getElementById(windowId);
+            if (window) {
+                window.style.display = 'block';
+            }
+        }
+
+        // Function to close a window by its ID
+        function closeWindow(windowId) {
+            let window = document.getElementById(windowId);
+            if (window) {
+                window.style.display = 'none';
+            }
+        }
+
+        function toggleBold() {
+            document.execCommand('bold');
+        }
+
+        function toggleItalic() {
+            document.execCommand('italic');
+        }
+
+        function toggleUnderline() {
+            document.execCommand('underline');
+        }
+
+        function toggleStrikethrough() {
+            document.execCommand('strikethrough');
+        }
+
+        function toggleSuperscript() {
+            document.execCommand('superscript');
+        }
+
+        function toggleSubscript() {
+            document.execCommand('subscript');
+        }
+       
+        function changeFont() {
+            let font = document.getElementById('fontSelect').value;
+            document.execCommand('fontName', false, font);
+        }
+
+        function changeFontSize() {
+            let size = document.getElementById('fontSizeSelect').value;
+            document.execCommand('fontSize', false, size);
+        }
+
+        function changeFontColor() {
+            let color = document.getElementById('fontColorInput').value;
+            document.execCommand('foreColor', false, color);
+        }
+
+        function changeHighlightColor() {
+            let color = document.getElementById('highlightColorInput').value;
+            document.execCommand('hiliteColor', false, color);
+        }
+
+        function alignLeft() {
+            document.execCommand('justifyLeft');
+        }
+
+        function alignCenter() {
+            document.execCommand('justifyCenter');
+        }
+
+        function alignRight() {
+            document.execCommand('justifyRight');
+        }
+
+        function applyHeading() {
+            document.execCommand('formatBlock', false, 'h1');
+        }
+
+        function applyParagraph() {
+            document.execCommand('formatBlock', false, 'p');
+        }
+
+        function saveDocument() {
+            let content = document.getElementById('wordContent').innerHTML;
+            localStorage.setItem('savedDocument', content);
+        }
+
+        function loadDocument() {
+            let savedContent = localStorage.getItem('savedDocument');
+            if (savedContent) {
+                document.getElementById('wordContent').innerHTML = savedContent;
+            }
+        }
+
+        function insertBulletList() {
+            document.execCommand('insertUnorderedList');
+        }
+
+        function insertNumberedList() {
+            document.execCommand('insertOrderedList');
+        }
+
+        function increaseIndent() {
+            document.execCommand('indent');
+        }
+
+        function decreaseIndent() {
+            document.execCommand('outdent');
+        }
+
+        function changeParagraphSpacing() {
+            let spacing = prompt("Enter paragraph spacing (in pixels):", "10");
+            document.execCommand('styleWithCSS', false, true);
+            document.execCommand('formatBlock', false, 'p');
+            let paragraphs = document.getElementById('wordContent').getElementsByTagName('p');
+            for (let p of paragraphs) {
+                p.style.marginBottom = `${spacing}px`;
+            }
+        }
+
+        function addHeader() {
+            let headerText = prompt("Enter header text:", "Header");
+            let header = document.createElement('header');
+            header.innerText = headerText;
+            document.getElementById('wordContent').prepend(header);
+
+        }
+        function addFooter() {
+            let footerText = prompt("Enter footer text:", "Footer");
+            let footer = document.createElement('footer');
+            footer.innerText = footerText;
+            document.getElementById('wordContent').appendChild(footer);
+        }
+function toggleOverline() {
+    document.execCommand('underline', false, null);
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('overline') ? 'none' : 'overline';
+}
+
+function toggleDottedUnderline() {
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('underline dotted') ? 'none' : 'underline dotted';
+}
+
+function toggleDoubleUnderline() {
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('underline double') ? 'none' : 'underline double';
+}
+
+function toggleDashUnderline() {
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('underline dashed') ? 'none' : 'underline dashed';
+}
+
+function changeUnderlineColor() {
+    const color = document.getElementById('underlineColorInput').value;
+    const content = document.getElementById('wordContent');
+    content.style.textDecorationColor = color;
+}
+
+function openThesaurus() {
+   async function lookupThesaurus() {
+    const word = document.getElementById('thesaurusInput').value;
+    if (word) {
+        try {
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            const data = await response.json();
+            displayThesaurusResults(data);
+        } catch (error) {
+            console.error('Error fetching thesaurus data:', error);
+            document.getElementById('thesaurusResults').innerHTML = 'Error fetching thesaurus data.';
+        }
+    } else {
+        document.getElementById('thesaurusResults').innerHTML = 'Please enter a word.';
+    }
+}
+
+function displayThesaurusResults(data) {
+    let results = '';
+    if (data && data[0] && data[0].meanings) {
+        const synonyms = data[0].meanings.flatMap(meaning => meaning.definitions.flatMap(def => def.synonyms || []));
+        results = synonyms.length ? `Synonyms for "${data[0].word}": ${synonyms.join(', ')}` : 'No synonyms found.';
+    } else {
+        results = 'No synonyms found.';
+    }
+    document.getElementById('thesaurusResults').innerHTML = results;
+}
+
+function toggleOverline() {
+    document.execCommand('underline', false, null);
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('overline') ? 'none' : 'overline';
+}
+
+function toggleDottedUnderline() {
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('underline dotted') ? 'none' : 'underline dotted';
+}
+
+function toggleDoubleUnderline() {
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('underline double') ? 'none' : 'underline double';
+}
+
+function toggleDashUnderline() {
+    const content = document.getElementById('wordContent');
+    content.style.textDecoration = content.style.textDecoration.includes('underline dashed') ? 'none' : 'underline dashed';
+}
+
+function changeUnderlineColor() {
+    const color = document.getElementById('underlineColorInput').value;
+    const content = document.getElementById('wordContent');
+    content.style.textDecorationColor = color;
+}
+
+function findReplace() {
+    const findText = prompt('Enter the text to find:');
+    const replaceText = prompt('Enter the replacement text:');
+    const content = document.getElementById('wordContent');
+    content.innerHTML = content.innerHTML.replace(new RegExp(findText, 'g'), replaceText);
+}
+
+function insertPageBreak() {
+    const content = document.getElementById('wordContent');
+    content.innerHTML += '<hr style="page-break-after: always;">';
+}
+
+function formatColumns() {
+    const columns = prompt('Enter the number of columns:');
+    const content = document.getElementById('wordContent');
+    content.style.columnCount = columns;
+}
+
+}
+
+function findReplace() {
+    const findText = prompt('Enter the text to find:');
+    const replaceText = prompt('Enter the replacement text:');
+    const content = document.getElementById('wordContent');
+    content.innerHTML = content.innerHTML.replace(new RegExp(findText, 'g'), replaceText);
+}
+
+function insertPageBreak() {
+    const content = document.getElementById('wordContent');
+    content.innerHTML += '<hr style="page-break-after: always;">';
+}
+
+function formatColumns() {
+    const columns = prompt('Enter the number of columns:');
+    const content = document.getElementById('wordContent');
+    content.style.columnCount = columns;
+}
+
+    
+       
+
+
+        // Function to handle keydown event in TFS DOS input
+        function handleDOSCommand(event) {
+            if (event.key === "Enter") {
+                executeDOSCommand();
+            }
+        }
+
+        // Function to execute a TFS DOS command
+        function executeDOSCommand() {
+            const inputElement = document.getElementById("dosInput");
+            const command = inputElement.value.toLowerCase();
+            const outputElement = document.getElementById("dosOutput");
+
+            // Check if the command exists in dosCommands
+            if (command in dosCommands) {
+                dosCommands[command]();
+            } else {
+                outputElement.innerText += "Command not found. Type 'help' for a list of commands.\n";
+            }
+
+            // Clear input after execution
+            inputElement.value = "";
+        }
+
+        // TFS DOS commands and their corresponding functions
+        const dosCommands = {
+            "help": displayHelp,
+            "clear": clearOutput,
+            "tfs": openTFS,
+            "exit": closeDOS
+        };
+
+        // Function to display TFS DOS help
+        function displayHelp() {
+            const outputElement = document.getElementById("dosOutput");
+            outputElement.innerText += "Available commands:\n";
+            outputElement.innerText += "- help: Display this help message\n";
+            outputElement.innerText += "- clear: Clear the screen\n";
+            outputElement.innerText += "- tfs: Open TFS\n";
+            outputElement.innerText += "- exit: Close TFS DOS\n";
+        }
+
+        // Function to clear TFS DOS output
+        function clearOutput() {
+            const outputElement = document.getElementById("dosOutput");
+            outputElement.innerText = "";
+        }
+
+        // Function to open TFS
+        function openTFS() {
+            // Open TFS in a new window or perform the desired action
+            const outputElement = document.getElementById("dosOutput");
+            outputElement.innerText += "Opening TFS...\n";
+        }
+
+        // Function to close TFS DOS
+        function closeDOS() {
+            const dosWindow = document.getElementById("tfsDOSWindow");
+            dosWindow.style.display = "none";
+        }
+
+        // Mailbox functions
+        // Add functions to manage mailbox here
+
+        function goToURL() {
+            const url = document.getElementById('urlInput').value;
+            document.getElementById('websiteContent').innerHTML = '<iframe src="' + url + '" style="width: 100%; height: 600px;"></iframe>';
+        }
+  // TFS Browser functions
+  // Function to go to the entered URL
+function goToURL() {
+    var url = document.getElementById('urlInput').value;
+    // Check if the entered URL is an inbuilt website
+    if (url === 'www.tfsN-network-net.in') {
+        displayInbuiltWebsiteContent("Welcome to TFS net", "Tfs net is the network and net of tfs.it is called the tfs net.");
+    } else if (url === 'www.tfs-searchoo.com') {
+        displayInbuiltSearchEngine();
+    } else if (url === 'www.tfs-store.com') {
+        displayInbuiltStore("TFS Store", "Explore a wide range of products at TFS Store.");
+    } else if (url === 'www.WE-LOVE-MRH.com') {
+        displayInbuiltWebsiteContent("welcome to the official website of we love MRH", "WELCOME!.");
+    } else if (url === 'www.ACTION-XR.com') {
+        displayInbuiltWebsiteContent("AXR OFFICIAL WEBSITE", "WELCOME.");
+    } else if (url === 'www.tfs-media.com') {
+        displayInbuiltWebsiteContent("welcome to tfs media.", "Get all answers of questions here!..<h3><p>what is a computer</p><p>result</p></h3>.");
+    } else if (url === 'www.tfs.com') {
+        displayInbuiltWebsiteContent("TFS", "welcome to the official website of tfs.<p><h3><p>about us. <p>tfs is a scientific organization.</p></p><p>our services</p><p><ul><p><li>tfs store</li><li>tfs builders</li><li>tfs webservices</li></p></ul></p></h3></p> ");
+     } else if (url === 'www.tfs-docs.com') {
+        displayInbuiltWebsiteContent("TFS Docs", "Share, edit, and collaborate on documents in real-time with TFS Docs.");
+    } else if (url === 'www.tfs-learning.com') {
+        displayInbuiltWebsiteContent("TFS Learning", "Explore tutorials, courses, and certifications to enhance your skills.");
+    } else if (url === 'www.tfs-music.com') {
+        displayInbuiltWebsiteContent("TFS Music", "Listen to your favorite songs and discover new artists on TFS Music.");
+    } else if (url === 'www.tfs-news.com') {
+        displayInbuiltWebsiteContent("TFS News", "Stay updated with the latest news and trends around the world.");
+    } else if (url === 'www.tfs-social.com') {
+        displayInbuiltWebsiteContent("TFS Social", "Connect, share, and communicate with other TFS users on TFS Social.");
+    } else {
+        // Handle other URLs or inbuilt websites
+        displayInbuiltWebsiteContent("Error 404", "Webpage not found");
+    }
+}
+
+
+// Function to display content of the inbuilt website
+function displayInbuiltWebsiteContent(title, content) {
+    var websiteContent = document.getElementById('websiteContent');
+    // Content of the inbuilt website (HTML markup)
+    var inbuiltWebsiteContent = `
+        <h2>${title}</h2>
+        <p>${content}</p>
+        <!-- Add more content as needed -->
+    `;
+    websiteContent.innerHTML = inbuiltWebsiteContent;
+}
+
+// Function to display TFS Searchoo search engine
+function displayInbuiltSearchEngine() {
+    var websiteContent = document.getElementById('websiteContent');
+    // Content of the TFS Searchoo search engine (HTML markup)
+    var searchEngineContent = `
+        <h2>TFS Searchoo</h2>
+  <p><h4>enter text to search it on the tfs-net</h4></p>
+        <form id="searchForm">
+            <input type="text" id="searchQuery" placeholder="Enter your search query">
+            <button type="submit">Search</button>
+        </form>
+        <div id="searchResults"></div>
+        <h4>TFS Searchoo 2024. All rights reserved.</h4>
+    `;
+    websiteContent.innerHTML = searchEngineContent;
+
+    // Add event listener for the search form
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var searchQuery = document.getElementById('searchQuery').value;
+        // Perform search functionality here
+        performSearch(searchQuery);
+    });
+}
+
+// Function to display TFS Store
+function displayInbuiltStore(title, content) {
+    var websiteContent = document.getElementById('websiteContent');
+    // Content of the TFS Store (HTML markup)
+    var storeContent = `
+        <h2>${title}</h2>
+        <p>${content}</p>
+        <!-- Add more content as needed -->
+    `;
+    websiteContent.innerHTML = storeContent;
+}
+
+// Function to perform search
+function performSearch(query) {
+    // Sample search data (replace with your actual data)
+    const searchData = [
+        { title: "What is a Computer?", description: "A computer is a programmable electronic device that can store, retrieve, and process data. <p><h4>www.tfs-media.com</h4></p>" },
+        { title: "How Does the Internet Work?", description: "The Internet is a global network of interconnected computers that communicate via standardized protocols." },
+        { title: "What is Artificial Intelligence?", description: "Artificial Intelligence (AI) refers to the simulation of human intelligence in machines that are programmed to think and learn like humans." },
+        { title: "Understanding Blockchain Technology", description: "Blockchain is a decentralized and distributed digital ledger technology used to record transactions across multiple computers in a secure and transparent manner." },
+        { title: "The Basics of Machine Learning", description: "Machine Learning is a subset of AI that enables computers to learn from data and improve their performance over time without being explicitly programmed." },
+        // Add more topics and descriptions as needed
+    ];
+
+    var searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = ''; // Clear previous search results
+
+    // Filter search data based on the query
+    var filteredResults = searchData.filter(function(result) {
+        return result.title.toLowerCase().includes(query.toLowerCase()) || result.description.toLowerCase().includes(query.toLowerCase());
+    });
+
+    // Display search results
+    if (filteredResults.length > 0) {
+        filteredResults.forEach(function(result) {
+            var resultElement = document.createElement('div');
+            resultElement.classList.add('search-result');
+            resultElement.innerHTML = `
+                <h3>${result.title}</h3>
+                <p>${result.description}</p>
+            `;
+            searchResults.appendChild(resultElement);
+        });
+    } else {
+        searchResults.innerHTML = '<p>No search results found.</p>';
+    }
+}
+
+
+        function openWebsite(url) {
+            document.getElementById('websiteContent').innerHTML = '<iframe src="' + url + '" style="width: 100%; height: 600px;"></iframe>';
+        }
+
+// Calculator functions
+let calculatorDisplay = document.getElementById("calculatorDisplay");
+let currentNumber = "0";
+let operator = "";
+let prevNumber = "0";
+
+function addToDisplay(number) {
+    if (currentNumber === "0" && number !== ".") {
+        currentNumber = number.toString();
+    } else {
+        currentNumber += number.toString();
+    }
+    calculatorDisplay.innerText = currentNumber;
+}
+
+function clearDisplay() {
+    currentNumber = "0";
+    calculatorDisplay.innerText = currentNumber;
+}
+
+function add() {
+    operator = "+";
+    prevNumber = currentNumber;
+    clearDisplay();
+}
+
+function subtract() {
+    operator = "-";
+    prevNumber = currentNumber;
+    clearDisplay();
+}
+
+function multiply() {
+    operator = "*";
+    prevNumber = currentNumber;
+    clearDisplay();
+}
+
+function divide() {
+    operator = "/";
+    prevNumber = currentNumber;
+    clearDisplay();
+}
+
+function calculate() {
+    let result;
+    switch (operator) {
+        case "+":
+            result = parseFloat(prevNumber) + parseFloat(currentNumber);
+            break;
+        case "-":
+            result = parseFloat(prevNumber) - parseFloat(currentNumber);
+            break;
+        case "*":
+            result = parseFloat(prevNumber) * parseFloat(currentNumber);
+            break;
+        case "/":
+            result = parseFloat(prevNumber) / parseFloat(currentNumber);
+            break;
+        default:
+            break;
+    }
+    currentNumber = result.toString();
+    calculatorDisplay.innerText = currentNumber;
+  
+  
+}
+  
+  function updateTime() {
+  var now = new Date();
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+  var seconds = now.getSeconds();
+  
+  // Add leading zeros if necessary
+  hours = hours < 10 ? '0' + hours : hours;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+  
+  var timeString = hours + ':' + minutes + ':' + seconds;
+  
+  document.getElementById('current-time').textContent = timeString;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+
+          // Function to install a program
+    function installProgram(programName, programWindowId) {
+        // Simulate download process
+        // Display alert indicating app is downloaded
+        alert("The app is downloaded!");
+        // Change the button text to "Open"
+        document.getElementById(programName + "InstallButton").innerText = "Open";
+        // Add functionality to open the program window
+        document.getElementById(programName + "InstallButton").setAttribute("onclick", "openWindow('" + programWindowId + "')");
+    }
+
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var loginForm = document.getElementById("login1Form");
+            var loginPage = document.getElementById("login2Page");
+            var appPage = document.getElementById("appPage");
+            var loggedInUser = document.getElementById("loggedInUser");
+            var loginMessage = document.getElementById("loginMessage");
+
+            loginForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                var username = document.getElementById("user1name").value;
+                var password = document.getElementById("passw1ord").value;
+
+                // Simulate user authentication (replace with actual authentication logic)
+                var users = [
+                    { username: "user", password: "password1" },
+                    { username: "user2", password: "password2" },
+                    { username: "user3", password: "password3" }
+                ];
+
+                var authenticatedUser = users.find(function(user) {
+                    return user.username === username && user.password === password;
+                });
+
+                if (authenticatedUser) {
+                    loggedInUser.textContent = username;
+                    loginMessage.textContent = "";
+                    loginForm.reset();
+                    loginPage.classList.add("hidden");
+                    appPage.classList.remove("hidden");
+                } else {
+                    loginMessage.textContent = "Invalid username or password.";
+                }
+            });
+        });
+function logout() {
+            var login2Page = document.getElementById("login2Page");
+            var appPage = document.getElementById("appPage");
+
+            login2Page.classList.remove("hidden");
+            appPage.classList.add("hidden");
+        }
+
+
+
+
+// Example function to add rows dynamically
+function addRow() {
+    var table = document.getElementById('sheetsTable').getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow();
+    var cellCount = table.rows[0].cells.length;
+
+    for (var i = 0; i < cellCount; i++) {
+        var newCell = newRow.insertCell(i);
+        if (i === 0) {
+            newCell.textContent = table.rows.length;
+        } else {
+            newCell.contentEditable = "true";
+        }
+    }
+}
+
+
+
+
+
+function minimizeWindow(windowId) {
+    var windowElement = document.getElementById(windowId);
+    windowElement.style.display = 'none';
+
+    // Create a button in the taskbar for the minimized window
+    var taskbarButton = document.createElement('button');
+    taskbarButton.className = 'taskbar-button';
+    taskbarButton.id = windowId + '-taskbar';
+    taskbarButton.innerText = windowId; // You can customize the button text
+    taskbarButton.onclick = function() {
+        restoreWindow(windowId);
+        this.remove(); // Remove the taskbar button when window is restored
+    };
+    document.getElementById('taskbar').appendChild(taskbarButton);
+}
+
+function maximizeWindow(windowId) {
+    var windowElement = document.getElementById(windowId);
+    if (windowElement.classList.contains('maximized')) {
+        windowElement.style.width = '400px'; // original width
+        windowElement.style.height = '500px'; // original height
+        windowElement.style.position = 'relative';
+        windowElement.classList.remove('maximized');
+    } else {
+        windowElement.style.width = '100%';
+        windowElement.style.height = '100%';
+        windowElement.style.position = 'fixed';
+        windowElement.style.top = '0';
+        windowElement.style.left = '0';
+        windowElement.style.zIndex = '1000'; // Ensure its on top
+        windowElement.classList.add('maximized');
+    }
+}
+
+function restoreWindow(windowId) {
+    var windowElement = document.getElementById(windowId);
+    windowElement.style.display = 'block';
+}
+
+// Example usage: attach the functions to buttons
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.minimize-button').forEach(button => {
+        button.addEventListener('click', function() {
+            minimizeWindow(button.closest('.window').id);
+        });
+    });
+
+    document.querySelectorAll('.maximize-button').forEach(button => {
+        button.addEventListener('click', function() {
+            maximizeWindow(button.closest('.window').id);
+        });
+    });
+
+    document.querySelectorAll('.close-button').forEach(button => {
+        button.addEventListener('click', function() {
+            closeWindow(button.closest('.window').id);
+        });
+    });
+});
+
+    async function searchDictionary() {
+        const word = document.getElementById('dictionarySearch').value;
+        const resultDiv = document.getElementById('dictionaryResult');
+        resultDiv.innerHTML = 'Loading...';
+
+        try {
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            if (!response.ok) {
+                throw new Error('Word not found');
+            }
+            const data = await response.json();
+            displayResult(data);
+        } catch (error) {
+            resultDiv.innerHTML = `Error: ${error.message}`;
+        }
+    }
+
+    function displayResult(data) {
+        const resultDiv = document.getElementById('dictionaryResult');
+        if (data.length > 0) {
+            const entry = data[0];
+            let html = `<h3>${entry.word}</h3>`;
+            entry.meanings.forEach(meaning => {
+                html += `<h4>${meaning.partOfSpeech}</h4>`;
+                meaning.definitions.forEach(definition => {
+                    html += `<p>${definition.definition}</p>`;
+                    if (definition.example) {
+                        html += `<p><em>Example: ${definition.example}</em></p>`;
+                    }
+                });
+            });
+            resultDiv.innerHTML = html;
+        } else {
+            resultDiv.innerHTML = 'No results found';
+        }
+    }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput').value;
+            const chatBox = document.getElementById('chatBox');
+            if (input.trim() === "") return;
+
+            // Display user message
+            const userMessage = document.createElement('div');
+            userMessage.textContent = "You: " + input;
+            chatBox.appendChild(userMessage);
+
+            // Generate AI response
+            const aiResponse = document.createElement('div');
+            aiResponse.textContent = "AI: " + getAIResponse(input);
+            chatBox.appendChild(aiResponse);
+
+            // Clear the input field
+            document.getElementById('chatInput').value = "";
+
+            // Scroll to the bottom of the chat box
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getAIResponse(input) {
+            const responses = {
+                "hello": "Hi there! How can I assist you today?",
+                "how are you": "I'm just a bunch of code, but I'm here to help!",
+                "what is your name": "I'm your friendly AI assistant.",
+                "what can you do": "I can chat with you and provide basic assistance. Try asking me to open a program!",
+                "open browser": "Opening browser...",
+                "open settings": "Opening settings...",
+                "open task manager": "Opening task manager...",
+                "open word": "Opening TFS Wording...",
+                "bye": "Goodbye! Have a great day!"
+            };
+
+            input = input.toLowerCase();
+            if (input in responses) {
+                const command = responses[input];
+                handleCommand(input);
+                return command;
+            } else {
+                return "I'm not sure how to respond to that. Can you ask something else?";
+            }
+        }
+
+        function handleCommand(command) {
+            switch (command) {
+                case "open browser":
+                    openWindow('tfsBrowserWindow');
+                    break;
+                case "open settings":
+                    openWindow('settingsWindow');
+                    break;
+                case "open task manager":
+                    openWindow('taskManagerWindow');
+                    break;
+                case "open word":
+                    openWindow('wordWindow');
+                    break;
+                // Add more commands as needed
+            }
+          
+        }
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+
+
+  document.addEventListener('DOMContentLoaded', loadNotes);
+
+  
+
+  function createNote() {
+    const note = document.createElement('div');
+    note.classList.add('note');
+    note.contentEditable = true;
+    note.innerText = 'New Note';
+    note.addEventListener('input', saveNotes);
+    document.getElementById('notesContainer').appendChild(note);
+    saveNotes();
+  }
+
+  function saveNotes() {
+    const notes = [];
+    document.querySelectorAll('.note').forEach(note => {
+      notes.push(note.innerText);
+    });
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }
+
+  function loadNotes() {
+    const notes = JSON.parse(localStorage.getItem('notes'));
+    if (notes) {
+      notes.forEach(noteText => {
+        const note = document.createElement('div');
+        note.classList.add('note');
+        note.contentEditable = true;
+        note.innerText = noteText;
+        note.addEventListener('input', saveNotes);
+        document.getElementById('notesContainer').appendChild(note);
+      });
+    }
+  }
+
+  function clearNotes() {
+    localStorage.removeItem('notes');
+    document.getElementById('notesContainer').innerHTML = '';
+  }
+
+// Minesweeper Functions
+    function initializeMinesweeper() {
+      const grid = document.getElementById('minesweeperGrid');
+      const rows = 8;
+      const cols = 8;
+      const minesCount = 10;
+      const cells = [];
+
+      // Create grid
+      for (let r = 0; r < rows; r++) {
+        cells[r] = [];
+        for (let c = 0; c < cols; c++) {
+          const cell = document.createElement('div');
+          cell.classList.add('minesweeper-cell');
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          cell.addEventListener('click', () => revealCell(r, c));
+          grid.appendChild(cell);
+          cells[r][c] = cell;
+        }
+      }
+
+      // Place mines
+      for (let i = 0; i < minesCount; i++) {
+        let row, col;
+        do {
+          row = Math.floor(Math.random() * rows);
+          col = Math.floor(Math.random() * cols);
+        } while (cells[row][col].dataset.mine);
+        cells[row][col].dataset.mine = 'true';
+      }
+
+      // Function to reveal a cell
+      function revealCell(row, col) {
+        const cell = cells[row][col];
+        if (cell.dataset.revealed) return;
+        cell.dataset.revealed = 'true';
+        if (cell.dataset.mine) {
+          cell.style.backgroundColor = 'red';
+          alert('Game Over!');
+          resetMinesweeper();
+        } else {
+          cell.style.backgroundColor = 'lightgrey';
+          const mines = countAdjacentMines(row, col);
+          if (mines > 0) {
+            cell.innerText = mines;
+          } else {
+            revealAdjacentCells(row, col);
+          }
+        }
+      }
+
+      // Count adjacent mines
+      function countAdjacentMines(row, col) {
+        let count = 0;
+        for (let r = -1; r <= 1; r++) {
+          for (let c = -1; c <= 1; c++) {
+            if (r === 0 && c === 0) continue;
+            const newRow = row + r;
+            const newCol = col + c;
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && cells[newRow][newCol].dataset.mine) {
+              count++;
+            }
+          }
+        }
+        return count;
+      }
+
+      // Reveal adjacent cells if no adjacent mines
+      function revealAdjacentCells(row, col) {
+        for (let r = -1; r <= 1; r++) {
+          for (let c = -1; c <= 1; c++) {
+            const newRow = row + r;
+            const newCol = col + c;
+            if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+              revealCell(newRow, newCol);
+            }
+          }
+        }
+      }
+
+      // Reset Minesweeper
+      function resetMinesweeper() {
+        grid.innerHTML = '';
+        initializeMinesweeper();
+      }
+    }
+
+    // Tic-Tac-Toe Functions
+    function initializeTicTacToe() {
+      const grid = document.getElementById('ticTacToeGrid');
+      let currentPlayer = 'X';
+
+      // Create grid
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('tic-tac-toe-cell');
+        cell.addEventListener('click', () => makeMove(cell));
+        grid.appendChild(cell);
+      }
+
+      function makeMove(cell) {
+        if (!cell.innerText) {
+          cell.innerText = currentPlayer;
+          if (checkWin()) {
+            alert(`${currentPlayer} wins!`);
+            resetGame();
+          } else if (Array.from(document.querySelectorAll('.tic-tac-toe-cell')).every(cell => cell.innerText)) {
+            alert("It's a draw!");
+            resetGame();
+          }
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+      }
+
+      function checkWin() {
+        const cells = document.querySelectorAll('.tic-tac-toe-cell');
+        const patterns = [
+          [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+          [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+          [0, 4, 8], [2, 4, 6] // Diagonals
+        ];
+        return patterns.some(pattern => {
+          const [a, b, c] = pattern;
+          return cells[a].innerText && cells[a].innerText === cells[b].innerText && cells[a].innerText === cells[c].innerText;
+        });
+      }
+
+      function resetGame() {
+        document.querySelectorAll('.tic-tac-toe-cell').forEach(cell => {
+          cell.innerText = '';
+        });
+      }
+    }
+
+const canvas = document.getElementById('pixelCanvas');
+        const ctx = canvas.getContext('2d');
+        let painting = false;
+        let brushColor = '#000000';
+        let brushSize = 1;
+
+        // Mouse events
+        canvas.addEventListener('mousedown', startPainting);
+        canvas.addEventListener('mouseup', stopPainting);
+        canvas.addEventListener('mousemove', draw);
+
+        // Touch events
+        canvas.addEventListener('touchstart', startPainting);
+        canvas.addEventListener('touchend', stopPainting);
+        canvas.addEventListener('touchmove', draw);
+
+        document.getElementById('colorPicker').addEventListener('change', (e) => brushColor = e.target.value);
+        document.getElementById('brushSize').addEventListener('change', (e) => brushSize = e.target.value);
+
+        function startPainting(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function stopPainting() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+
+            // Prevent scrolling when touching the canvas
+            e.preventDefault();
+
+            let offsetX, offsetY;
+
+            if (e.type.startsWith('touch')) {
+                const rect = canvas.getBoundingClientRect();
+                offsetX = e.touches[0].clientX - rect.left;
+                offsetY = e.touches[0].clientY - rect.top;
+            } else {
+                offsetX = e.offsetX;
+                offsetY = e.offsetY;
+            }
+
+            ctx.fillStyle = brushColor;
+            ctx.fillRect(offsetX, offsetY, brushSize, brushSize);
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+    function savePainting() {
+            const paintingData = canvas.toDataURL();
+            localStorage.setItem('savedPainting', paintingData);
+            alert('Painting saved!');
+        }
+
+        function loadPainting() {
+            const paintingData = localStorage.getItem('savedPainting');
+            if (paintingData) {
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = paintingData;
+            } else {
+                alert('No saved painting found.');
+            }
+        }
+
+function toggleStartMenu() {
+            const startMenu = document.getElementById('start-menu');
+            startMenu.classList.toggle('hidden');
+        }
+
+// Array to hold program data (modify according to your existing program buttons)
+const programs = [
+    { name: "TFS Appstore", id: "tfsWindow" },
+    { name: "TFS Browser", id: "tfsBrowserWindow" },
+    { name: "Notepad", id: "notepadWindow" },
+    { name: "Wording", id: "wordWindow" },
+    { name: "Pictures", id: "paintWindow" },
+    { name: "Files", id: "fileManagerWindow" },
+    { name: "Task Manager", id: "processesWindow" },
+    { name: "Settings", id: "settingsWindow" },
+    // Add all other programs here
+];
+
+// Function to search programs
+function searchPrograms() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const results = programs.filter(program => program.name.toLowerCase().includes(query));
+
+    // Display results (implement the UI as needed; for now, let's just log it)
+    console.clear(); // Clear previous results
+    results.forEach(program => {
+        console.log(`Found: ${program.name}`);
+        // Optionally, you can show suggestions below the search bar or in another part of the UI
+        // Example: create a dropdown with clickable options
+    });
+}
+
+// Function to open the selected program
+function openProgram(programId) {
+    openWindow(programId); // Assumes you have an existing function to open windows by ID
+}
+
+// Modify searchPrograms to show results dynamically
+function searchPrograms() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const results = programs.filter(program => program.name.toLowerCase().includes(query));
+
+    // Clear existing results
+    const resultsContainer = document.getElementById("searchResults");
+    resultsContainer.innerHTML = ""; // Clear previous results
+
+    // Show the matching programs
+    results.forEach(program => {
+        const resultItem = document.createElement("div");
+        resultItem.textContent = program.name;
+        resultItem.className = "search-result-item"; // Add CSS class for styling
+        resultItem.onclick = () => openProgram(program.id); // Set click action to open the program
+        resultsContainer.appendChild(resultItem);
+    });
+}
+
+// Function to perform a search in Searchhoo
+function performSearch() {
+    const query = document.getElementById('searchhooInput').value.trim().toLowerCase();
+    const resultsContainer = document.getElementById('searchResultsContainer');
+
+    // Simulated search results
+    const searchResults = [
+        { title: "TFS OS Official Website", description: "Learn more about TFS OS and its features.", url: "https://www.tfs-os.com" },
+        { title: "How to Use TFS Searchhoo", description: "A guide on how to effectively use Searchhoo.", url: "https://www.tfs-os.com/searchhoo-guide" },
+        { title: "TFS Searchhoo Tips", description: "Top tips to enhance your Searchhoo experience.", url: "https://www.tfs-os.com/tips" },
+        // Add more simulated results as needed
+    ];
+
+    // Clear previous results
+    resultsContainer.innerHTML = "";
+
+    // Filter and display results based on the search query
+    const filteredResults = searchResults.filter(result => result.title.toLowerCase().includes(query) || result.description.toLowerCase().includes(query));
+
+    if (filteredResults.length > 0) {
+        filteredResults.forEach(result => {
+            const resultElement = document.createElement('div');
+            resultElement.className = 'search-result';
+            resultElement.innerHTML = `
+                <h3>${result.title}</h3>
+                <p>${result.description}</p>
+                <a href="${result.url}" target="_blank">${result.url}</a>
+            `;
+            resultsContainer.appendChild(resultElement);
+        });
+    } else {
+        resultsContainer.innerHTML = "<p>No results found for your search.</p>";
+    }
+}
+
+// Default customization settings
+let customizationSettings = {
+  theme: 'light',
+  backgroundImage: '',
+  windowColor: '#EBEBEB',
+  windowBorder: 'solid',
+  windowTransparency: 1,
+  fontStyle: 'Arial',
+  fontSize: 14,
+  soundEffects: true,
+};
+
+// Apply customization settings when the page loads
+document.addEventListener('DOMContentLoaded', loadCustomizationSettings);
+
+// Function to apply the selected theme
+function applyTheme() {
+  const theme = document.getElementById('themeSelect').value;
+  document.body.className = theme; // Apply the theme class to the body
+
+  // Additional theme customization if needed
+  if (theme === 'dark') {
+    document.body.style.backgroundColor = '#121212';
+  } else if (theme === 'light') {
+    document.body.style.backgroundColor = '#ffffff';
+  } else {
+    document.body.style.backgroundColor = customizationSettings.backgroundImage ? 'transparent' : '#ffffff';
+  }
+}
+
+// Function to change the background image
+function changeBackgroundImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.getElementById('background').style.backgroundImage = `url(${e.target.result})`;
+      customizationSettings.backgroundImage = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Function to change window color
+function changeWindowColor() {
+  const color = document.getElementById('windowColor').value;
+  document.querySelectorAll('.window').forEach(win => {
+    win.style.backgroundColor = color;
+  });
+  customizationSettings.windowColor = color;
+}
+
+// Function to change window border style
+function changeWindowBorder() {
+  const borderStyle = document.getElementById('windowBorder').value;
+  document.querySelectorAll('.window').forEach(win => {
+    win.style.borderStyle = borderStyle;
+  });
+  customizationSettings.windowBorder = borderStyle;
+}
+
+// Function to change window transparency
+function changeWindowTransparency() {
+  const transparency = document.getElementById('windowTransparency').value;
+  document.querySelectorAll('.window').forEach(win => {
+    win.style.opacity = transparency;
+  });
+  customizationSettings.windowTransparency = transparency;
+}
+
+// Function to change font style
+function changeFontStyle() {
+  const font = document.getElementById('fontStyle').value;
+  document.body.style.fontFamily = font;
+  customizationSettings.fontStyle = font;
+}
+
+// Function to change font size
+function changeFontSize() {
+  const size = document.getElementById('fontSize').value;
+  document.body.style.fontSize = `${size}px`;
+  customizationSettings.fontSize = parseInt(size, 10);
+}
+
+// Function to save customization settings
+function saveCustomizationSettings() {
+  customizationSettings.soundEffects = document.getElementById('soundEffects').checked;
+  localStorage.setItem('customizationSettings', JSON.stringify(customizationSettings));
+  alert('Customization settings saved.');
+}
+
+// Function to load customization settings
+function loadCustomizationSettings() {
+  const savedSettings = JSON.parse(localStorage.getItem('customizationSettings'));
+  if (savedSettings) {
+    customizationSettings = savedSettings;
+    document.getElementById('themeSelect').value = customizationSettings.theme;
+    document.getElementById('windowColor').value = customizationSettings.windowColor;
+    document.getElementById('windowBorder').value = customizationSettings.windowBorder;
+    document.getElementById('windowTransparency').value = customizationSettings.windowTransparency;
+    document.getElementById('fontStyle').value = customizationSettings.fontStyle;
+    document.getElementById('fontSize').value = customizationSettings.fontSize;
+    document.getElementById('soundEffects').checked = customizationSettings.soundEffects;
+
+    // Apply settings
+    applyTheme();
+    changeWindowColor();
+    changeWindowBorder();
+    changeWindowTransparency();
+    changeFontStyle();
+    changeFontSize();
+
+    if (customizationSettings.backgroundImage) {
+      document.getElementById('background').style.backgroundImage = `url(${customizationSettings.backgroundImage})`;
+    }
+  }
+}
+
+
+// Notification System
+const notifications = [];
+
+// Default notification settings
+let notificationSettings = {
+  enableSound: true,
+  enableVisual: true,
+  duration: 5 // in seconds
+};
+
+// Function to show a notification
+function showNotification(message) {
+  if (!notificationSettings.enableVisual) return;
+
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+
+  // Add to the notification container
+  const container = document.getElementById('notificationContainer');
+  container.appendChild(notification);
+
+  // Add to the notification center
+  notifications.push(message);
+  updateNotificationCenter();
+
+  // Remove notification after specified duration
+  setTimeout(() => {
+    notification.classList.add('hide');
+    setTimeout(() => notification.remove(), 500);
+  }, notificationSettings.duration * 1000);
+
+  // Play sound if enabled
+  if (notificationSettings.enableSound) {
+    playNotificationSound();
+  }
+}
+
+// Function to play notification sound
+function playNotificationSound() {
+  const sound = new Audio('path/to/sound.mp3'); // Add your sound file path here
+  sound.play();
+}
+
+// Function to update the notification center list
+function updateNotificationCenter() {
+  const list = document.getElementById('notificationList');
+  list.innerHTML = notifications.map(notif => `<li>${notif}</li>`).join('');
+}
+
+// Function to save notification settings
+function saveNotificationSettings() {
+  notificationSettings.enableSound = document.getElementById('enableSound').checked;
+  notificationSettings.enableVisual = document.getElementById('enableVisual').checked;
+  notificationSettings.duration = parseInt(document.getElementById('notificationDuration').value, 10);
+
+  alert('Notification settings saved.');
+}
+
+// Initialize settings from saved state
+function loadNotificationSettings() {
+  document.getElementById('enableSound').checked = notificationSettings.enableSound;
+  document.getElementById('enableVisual').checked = notificationSettings.enableVisual;
+  document.getElementById('notificationDuration').value = notificationSettings.duration;
+}
+
+// Call this function to show notifications
+function triggerNotificationExample() {
+  showNotification('This is a test notification!');
+}
+
+// Load settings when the page loads
+document.addEventListener('DOMContentLoaded', loadNotificationSettings);
+
+// Function to update the clock widget
+function updateClock() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString();
+  document.getElementById('clockDisplay').innerText = timeString;
+  setTimeout(updateClock, 1000);
+}
+
+// Function to update the weather widget
+async function updateWeather() {
+  // Fetch weather data using an API (e.g., OpenWeatherMap)
+  try {
+    const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY');
+    const data = await response.json();
+    document.getElementById('weatherInfo').innerText = `${data.weather[0].description}, ${Math.round(data.main.temp - 273.15)}°C`;
+  } catch (error) {
+    document.getElementById('weatherInfo').innerText = 'Unable to load weather';
+  }
+}
+
+// Function to update system monitor (dummy data for demonstration)
+function updateSystemMonitor() {
+  const cpuUsage = Math.floor(Math.random() * 100);
+  const memoryUsage = Math.floor(Math.random() * 100);
+  document.getElementById('systemUsage').innerText = `CPU: ${cpuUsage}%, Memory: ${memoryUsage}%`;
+  setTimeout(updateSystemMonitor, 5000);
+}
+
+// Save sticky note content
+document.getElementById('stickyNoteContent').addEventListener('input', function () {
+  localStorage.setItem('stickyNote', this.value);
+});
+
+// Load saved sticky note content
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('stickyNoteContent').value = localStorage.getItem('stickyNote') || '';
+ 
+  updateSystemMonitor();
+});
+
+// Simple virtual assistant command processor
+function processAssistantCommand() {
+  const input = document.getElementById('assistantInput').value.toLowerCase();
+  const responseElement = document.getElementById('assistantResponse');
+
+  if (input.includes('open') && input.includes('browser')) {
+    openWindow('tfsBrowserWindow');
+    responseElement.innerText = 'Opening Browser...';
+  } else if (input.includes('weather')) {
+    updateWeather();
+    responseElement.innerText = 'Fetching current weather...';
+  } else {
+    responseElement.innerText = 'Sorry, I do not understand that command.';
+  }
+
+  // Clear input field
+  document.getElementById('assistantInput').value = '';
+}
+
+// Function to handle voice commands (optional)
+function startVoiceAssistant() {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.onresult = function (event) {
+    const command = event.results[0][0].transcript;
+    document.getElementById('assistantInput').value = command;
+    processAssistantCommand();
+  };
+  recognition.start();
+}
+
+// Function to handle multiple file uploads
+function uploadFiles(event) {
+    const files = event.target.files;
+    Array.from(files).forEach((file) => {
+        addFileToExplorer(file);
+    });
+}
+
+// Function to add files to the File Explorer
+function addFileToExplorer(file) {
+    const fileElement = document.createElement('div');
+    fileElement.className = 'file';
+    fileElement.draggable = true;
+    fileElement.ondragstart = drag;
+    fileElement.onclick = () => previewFile(file);
+
+    // Display icons based on file type
+    if (file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        fileElement.appendChild(img);
+    } else if (file.type === 'text/plain') {
+        const textIcon = document.createElement('span');
+        textIcon.textContent = 'TXT';
+        fileElement.appendChild(textIcon);
+    } else {
+        const defaultIcon = document.createElement('span');
+        defaultIcon.textContent = file.name.split('.').pop().toUpperCase();
+        fileElement.appendChild(defaultIcon);
+    }
+
+    document.getElementById('fileExplorer').appendChild(fileElement);
+}
+
+// Drag start handler
+function drag(event) {
+    event.dataTransfer.setData('text', event.target.id);
+}
+
+// Handle file drop from outside the browser
+function handleFileDrop(event) {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    Array.from(files).forEach((file) => {
+        addFileToExplorer(file);
+    });
+}
+
+// Function to preview a file
+function previewFile(file) {
+    const previewArea = document.getElementById('previewArea');
+    previewArea.innerHTML = '';
+
+    if (file.type === 'text/plain') {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const text = document.createElement('pre');
+            text.innerText = e.target.result;
+            previewArea.appendChild(text);
+        };
+        reader.readAsText(file);
+    } else if (file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        previewArea.appendChild(img);
+    } else {
+        const fileInfo = document.createElement('p');
+        fileInfo.innerText = `File: ${file.name}\nType: ${file.type}\nSize: ${file.size} bytes`;
+        previewArea.appendChild(fileInfo);
+    }
+
+    openPreview();
+}
+
+// Function to open the file preview modal
+function openPreview() {
+    document.getElementById('filePreviewModal').style.display = 'flex';
+}
+
+// Function to close the file preview modal
+function closePreview() {
+    document.getElementById('filePreviewModal').style.display = 'none';
+}
+
+    </script>
+</body>
+</html>
+
+
+
+<!-- Create Account Form -->
+<div id="createAccountPage" class="hidden">
+    <h2>Create Account</h2>
+    <form id="createAccountForm">
+        <input type="text" id="newUsername" placeholder="Username" required>
+        <input type="password" id="newPassword" placeholder="Password" required>
+        <button type="submit">Create Account</button>
+    </form>
+    <p><a href="#" onclick="switchToLogin()">Already have an account? Login</a></p>
+</div>
+
+<!-- Login Form -->
+<div id="loginPage" class="block">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p><a href="#" onclick="switchToCreateAccount()">Create a new account</a></p>
+</div>
+
+
+</div>
+
+<script>
+// Handle account creation
+document.getElementById('createAccountForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const username = document.getElementById('newUsername').value;
+    const password = document.getElementById('newPassword').value;
+    if (localStorage.getItem(username)) {
+        alert('Username already exists!');
+    } else {
+        localStorage.setItem(username, password);
+        alert('Account created successfully!');
+        switchToLogin();
+    }
+});
+
+// Handle login
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const storedPassword = localStorage.getItem(username);
+    if (storedPassword && storedPassword === password) {
+        alert('Login successful!');
+        switchToOS();
+    } else {
+        alert('Invalid username or password.');
+    }
+});
+
+// Switch to Login form
+function switchToLogin() {
+    document.getElementById('createAccountPage').classList.add('hidden');
+    document.getElementById('loginPage').classList.remove('hidden');
+}
+
+// Switch to Create Account form
+function switchToCreateAccount() {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('createAccountPage').classList.remove('hidden');
+}
+
+// Display OS interface after login
+function switchToOS() {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('os-container').style.display = 'block';
+}
+
+
+
+</script>
+
+</body>
+</html>
